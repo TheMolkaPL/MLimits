@@ -27,9 +27,6 @@ public class Util {
         }
         return list;
     }
-    public static String[] splitMaterial(String s){
-        return s.split(":");
-    }
 
     public static Collection<? extends Player> getOnlinePlayers() {
         final Object players = Bukkit.getOnlinePlayers();

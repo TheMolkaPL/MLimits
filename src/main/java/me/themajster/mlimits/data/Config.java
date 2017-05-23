@@ -1,13 +1,13 @@
 package me.themajster.mlimits.data;
 
 import lombok.Getter;
+import lombok.Setter;
 import me.themajster.mlimits.Main;
 import org.bukkit.configuration.file.FileConfiguration;
 
 /**
  * Created by TheMajster on 23.05.2017.
  */
-@Getter
 public class Config {
 
     private static boolean checkTask;
@@ -25,5 +25,17 @@ public class Config {
     public static void reloadCfg(){
         Main.getPlugin().reloadConfig();
         loadCfg();
+    }
+
+    public static int getTimeCheck() {
+        return timeCheck;
+    }
+
+    public static boolean isCheckEvent() {
+        return checkEvent;
+    }
+
+    public static boolean isCheckTask() {
+        return checkTask;
     }
 }

@@ -34,10 +34,13 @@ public class Main extends JavaPlugin {
     }
     private static void registerListeners(){
         PluginManager pm = Bukkit.getPluginManager();
-        pm.registerEvents(new PlayerInteractListener(), getPlugin());
-
+        if(Config.isCheckEvent()){
+            pm.registerEvents(new PlayerInteractListener(), getPlugin());
+        }
     }
     private static void registerTasks(){
-        CheckLimits.enable();
+        if(Config.isCheckTask()){
+            CheckLimits.enable();
+        }
     }
 }
