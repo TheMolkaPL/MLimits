@@ -21,8 +21,12 @@ public class PlayerInteractListener implements Listener {
                 int i = Util.getAmount(e.getPlayer(), Material.getMaterial(split[0]), Short.valueOf(split[1]));
                 if(e.getPlayer().hasPermission(limit.getVpermission())){
                     if(i > limit.getVlimit()){
-                        //e.getPlayer().getInventory().remove(new ItemStack(Material.getMaterial(split[0]), ));
-
+                        e.getPlayer().getInventory().remove(new ItemStack(Material.getMaterial(split[0]), i - limit.getVlimit()));
+                       // for(String s : limit.)
+                    }
+                }else{
+                    if(i > limit.getPlimit()){
+                        e.getPlayer().getInventory().remove(new ItemStack(Material.getMaterial(split[0]), i - limit.getPlimit()));
                     }
                 }
 
