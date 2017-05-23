@@ -21,4 +21,9 @@ public class Config {
         checkEvent = fc.getBoolean("Config.check.event");
         timeCheck = fc.getInt("Config.time");
     }
+
+    public static void reloadCfg(){
+        Main.getPlugin().reloadConfig();
+        loadCfg();
+    }
 }
