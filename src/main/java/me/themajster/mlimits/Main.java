@@ -1,6 +1,8 @@
 package me.themajster.mlimits;
 
+import me.themajster.mlimits.listeners.PlayerInteractListener;
 import me.themajster.mlimits.managers.LimitManager;
+import me.themajster.mlimits.utils.tasks.CheckLimits;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,12 +16,15 @@ public class Main extends JavaPlugin {
 
     public void onEnable(){
         plugin = this;
+
         saveDefaultConfig();
         LimitManager.load();
+        registerListeners();
+        registerTasks();
     }
 
     public void onDisable(){
-
+        Bukkit.getScheduler().cancelAllTasks();
     }
 
     public static Main getPlugin(){
@@ -27,9 +32,10 @@ public class Main extends JavaPlugin {
     }
     private static void registerListeners(){
         PluginManager pm = Bukkit.getPluginManager();
+        pm.registerEvents(new PlayerInteractListener(), getPlugin());
 
     }
     private static void registerTasks(){
-
+        CheckLimits.enable();
     }
 }

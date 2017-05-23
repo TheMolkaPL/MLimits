@@ -1,8 +1,12 @@
 package me.themajster.mlimits.utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,6 +27,14 @@ public class Util {
     }
     public static String[] splitMaterial(String s){
         return s.split(":");
+    }
+
+    public static Collection<? extends Player> getOnlinePlayers() {
+        final Object players = Bukkit.getOnlinePlayers();
+        if (players instanceof Player[]) {
+            return Arrays.asList((Player[])players);
+        }
+        return (Collection<? extends Player>)players;
     }
 
 }
