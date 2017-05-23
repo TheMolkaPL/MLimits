@@ -1,0 +1,19 @@
+Limits:
+  limit1:
+    check:
+      task: true # Czy ma sprawdzac taskiem
+      event: false # Czy ma sprawdzac eventem
+    type-material: false # jezeli false to wyczytuje z pola nizej id jak true to nazwe
+    material: "1:0" # Format "nazwa/id:data"
+    player-amount: 16 # Limit dla gracza
+    vip-amount: 32 # Limit dla gracza z powiekszonym limitem
+    vip-permission: "vip.limits" # Permisja powiekszenia limitu
+    messages:
+      player-move-item:
+      - "&6{AMOUNT} kamienia zostalo przeniesione do enderchesta!"
+      player-drop-item:
+      - "&6{AMOUNT} kamienia zostalo wyrzucone obok Ciebie!"
+      vip-move-item:
+      - "&6{AMOUNT} kamienia zostalo przeniesione do enderchesta!"
+      vip-drop-item:
+      - "&6{AMOUNT} kamienia zostalo wyrzucone obok Ciebie!"
