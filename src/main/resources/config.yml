@@ -1,8 +1,10 @@
+Config:
+  time: 30
+  check:
+    task: true # Czy ma sprawdzac taskiem
+    event: false # Czy ma sprawdzac eventem
 Limits:
   limit1:
-    check:
-      task: true # Czy ma sprawdzac taskiem
-      event: false # Czy ma sprawdzac eventem
     type-material: false # jezeli false to wyczytuje z pola nizej id jak true to nazwe
     material: "1:0" # Format "nazwa/id:data"
     player-amount: 16 # Limit dla gracza

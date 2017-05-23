@@ -1,5 +1,6 @@
 package me.themajster.mlimits;
 
+import me.themajster.mlimits.data.Config;
 import me.themajster.mlimits.listeners.PlayerInteractListener;
 import me.themajster.mlimits.managers.LimitManager;
 import me.themajster.mlimits.utils.tasks.CheckLimits;
@@ -19,6 +20,7 @@ public class Main extends JavaPlugin {
 
         saveDefaultConfig();
         LimitManager.load();
+        Config.loadCfg();
         registerListeners();
         registerTasks();
     }

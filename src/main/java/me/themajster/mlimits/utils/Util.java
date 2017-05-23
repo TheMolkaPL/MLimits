@@ -2,7 +2,9 @@ package me.themajster.mlimits.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,6 +37,16 @@ public class Util {
             return Arrays.asList((Player[])players);
         }
         return (Collection<? extends Player>)players;
+    }
+
+    public static int getAmount(Player p, Material mat, int data){
+        int i = 0;
+        for(ItemStack is : p.getInventory().getContents()){
+            if(is.getType().equals(mat) && is.getData().getData() == (short)data){
+                i += is.getAmount();
+            }
+        }
+        return i;
     }
 
 }
