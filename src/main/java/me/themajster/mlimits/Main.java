@@ -49,7 +49,7 @@ public class Main extends JavaPlugin {
         }
     }
     private static boolean checkFile(){
-        if(getPlugin().getDescription().getName().contains("MLimits") && getPlugin().getDescription().getAuthors().contains("TheMajster") && getPlugin().getDescription().getVersion().contains("0.2") &&
+        if(getPlugin().getDescription().getName().contains("MLimits") && getPlugin().getDescription().getAuthors().contains("TheMajster") && getPlugin().getDescription().getVersion().contains("0.3") &&
                 getPlugin().getDescription().getMain().contains("me.themajster.mlimits.Main")) return true;
         return false;
     }

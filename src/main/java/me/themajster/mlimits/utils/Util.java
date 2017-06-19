@@ -53,18 +53,17 @@ public class Util {
         int all = is.getAmount();
         int toDrop = 0;
         int toMove = 0;
-        ItemStack item = null;
         for(int i = 0; i < inv.getSize(); i++){
             ItemStack itemStack = inv.getItem(i);
             if(toAdded == 0) break;
             if(itemStack == null){
                 if(toAdded >= is.getMaxStackSize()){
-                    item = new ItemStack(is.getType(), is.getMaxStackSize(), is.getData().getData());
+                    ItemStack item = new ItemStack(is.getType(), is.getMaxStackSize(), is.getData().getData());
                     toAdded -= is.getMaxStackSize();
                     toMove += is.getMaxStackSize();
                     inv.addItem(item);
                 }else{
-                    item = new ItemStack(is.getType(), toAdded, is.getData().getData());
+                    ItemStack item = new ItemStack(is.getType(), toAdded, is.getData().getData());
                     toAdded -= item.getAmount();
                     toMove += item.getAmount();
                     inv.addItem(item);
@@ -73,20 +72,20 @@ public class Util {
                 if(itemStack.getAmount() == is.getMaxStackSize()) continue;
                 int toStack = itemStack.getMaxStackSize() - itemStack.getAmount();
                 if(toAdded >= toStack){
-                    item = new ItemStack(is.getType(), itemStack.getAmount() + toStack, is.getData().getData());
+                    ItemStack item = new ItemStack(is.getType(), itemStack.getAmount() + toStack, is.getData().getData());
                     toAdded -= toStack;
                     toMove += toStack;
-                    inv.setItem(i, item);
+                    inv.addItem(item);
                 }else{
-                    item = new ItemStack(is.getType(), itemStack.getAmount() +toAdded, is.getData().getData());
+                    ItemStack item = new ItemStack(is.getType(), itemStack.getAmount() +toAdded, is.getData().getData());
                     toMove += toAdded;
                     toAdded -= toAdded;
-                    inv.setItem(i, item);
+                    inv.addItem(item);
                 }
             }
         }
         if(all - toMove != 0){
-            item = new ItemStack(is.getType(), all - toMove, is.getData().getData());
+            ItemStack item = new ItemStack(is.getType(), all - toMove, is.getData().getData());
             toDrop += all - toMove;
             Bukkit.getWorld(p.getWorld().getName()).dropItemNaturally(p.getLocation(), item);
         }

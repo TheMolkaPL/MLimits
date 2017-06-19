@@ -41,6 +41,7 @@ public class LimitManager {
             if (p.hasPermission(limit.getVpermission())) {
                 if (amount > limit.getVlimit()) {
                     ItemStack is = new ItemStack(mat, amount - limit.getVlimit(), (short) limit.getData());
+                    //System.out.println("Item: " + is.getType() + " *" +is.getAmount());
 
                     Util.removeInventoryItems(p.getInventory(), mat, limit.getData(), limit.getVlimit());
                     String[] split = Util.addItem(p, p.getEnderChest(), is).split("-");
