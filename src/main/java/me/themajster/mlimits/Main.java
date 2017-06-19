@@ -17,7 +17,11 @@ public class Main extends JavaPlugin {
 
     public void onEnable(){
         plugin = this;
-
+        if(!checkFile()){
+            System.out.println("["+getDescription().getName()+ "] Wykryto zmiany w plugin.yml");
+            plugin = null;
+        }
+        System.out.println("["+getDescription().getName()+ "] zostal wlaczony!");
         saveDefaultConfig();
         LimitManager.load();
         Config.loadCfg();
@@ -26,12 +30,13 @@ public class Main extends JavaPlugin {
     }
 
     public void onDisable(){
-        Bukkit.getScheduler().cancelAllTasks();
+        System.out.println("["+getDescription().getName()+ "] zostal wylaczony!");
     }
 
     public static Main getPlugin(){
         return plugin;
     }
+
     private static void registerListeners(){
         if(Config.isCheckEvent()){
             PluginManager pm = Bukkit.getPluginManager();
@@ -42,5 +47,10 @@ public class Main extends JavaPlugin {
         if(Config.isCheckTask()){
             CheckLimits.enable();
         }
+    }
+    private static boolean checkFile(){
+        if(getPlugin().getDescription().getName().contains("MLimits") && getPlugin().getDescription().getAuthors().contains("TheMajster") && getPlugin().getDescription().getVersion().contains("0.2") &&
+                getPlugin().getDescription().getMain().contains("me.themajster.mlimits.Main")) return true;
+        return false;
     }
 }
