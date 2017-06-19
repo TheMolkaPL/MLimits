@@ -1,21 +1,18 @@
 Config:
   time: 30
   check:
-    task: true # Czy ma sprawdzac taskiem
-    event: false # Czy ma sprawdzac eventem
+    task: false # Czy ma sprawdzac taskiem
+    event: true # Czy ma sprawdzac eventem
 Limits:
   limit1:
-    type-material: false # jezeli false to wyczytuje z pola nizej id jak true to nazwe
-    material: "1:0" # Format "nazwa/id:data"
+    material: "1" # Format "nazwa lub id"
+    material-type: false # jezeli false to wyczytuje z pola nizej id jak true to nazwe
+    data: 0 # Data itemu
     player-amount: 16 # Limit dla gracza
     vip-amount: 32 # Limit dla gracza z powiekszonym limitem
     vip-permission: "vip.limits" # Permisja powiekszenia limitu
     messages:
-      player-move-item:
+      move-item:
       - "&6{AMOUNT} kamienia zostalo przeniesione do enderchesta!"
-      player-drop-item:
-      - "&6{AMOUNT} kamienia zostalo wyrzucone obok Ciebie!"
-      vip-move-item:
-      - "&6{AMOUNT} kamienia zostalo przeniesione do enderchesta!"
-      vip-drop-item:
+      drop-item:
       - "&6{AMOUNT} kamienia zostalo wyrzucone obok Ciebie!"

@@ -8,7 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
- * Created by TheMajster on 23.05.2017.
+ * Created by TheMajster on 19.06.2017.
  */
 public class CheckLimits {
     public static void enable(){

@@ -3,16 +3,18 @@ package me.themajster.mlimits.managers;
 import me.themajster.mlimits.Main;
 import me.themajster.mlimits.objects.Limit;
 import me.themajster.mlimits.utils.Util;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by TheMajster on 23.05.2017.
+ * Created by TheMajster on 19.06.2017.
  */
 public class LimitManager {
 
@@ -32,130 +34,44 @@ public class LimitManager {
     public static List<Limit> getLimits() {
         return limits;
     }
-
     public static void check(Player p) {
         for (Limit limit : LimitManager.getLimits()) {
-            int i = 0;
-            ItemStack is = null;
-            if (limit.isNameOrId()) {
-                i = Util.getAmount(p, Material.getMaterial(limit.getMaterial()), (short) limit.getData());
-            } else {
-                i = Util.getAmount(p, Material.getMaterial(Integer.valueOf(limit.getMaterial())), (short) limit.getData());
-            }
+            Material mat = (limit.isNameOrId() ? Material.getMaterial(limit.getMaterial()) : Material.getMaterial(Integer.valueOf(limit.getMaterial())));
+            int amount = Util.getAmount(p, mat, (short)limit.getData());
             if (p.hasPermission(limit.getVpermission())) {
-                if (i > limit.getVlimit()) {
-                    if (limit.isNameOrId()) {
-                        is = new ItemStack(Material.getMaterial(limit.getMaterial()), i - limit.getVlimit(), (short) limit.getData());
-                    } else {
-                        is = new ItemStack(Material.getMaterial(Integer.valueOf(limit.getMaterial())), i - limit.getVlimit(), (short) limit.getData());
-                    }
-                    int x = is.getAmount();
-                    int xx= 0;
-                    p.getInventory().remove(is);
-                    for (int a = 0; a < p.getEnderChest().getSize(); a++) {
-                        if (p.getEnderChest().getItem(a).getType().equals(is.getType()) && p.getEnderChest().getItem(a).getData().getData() == (short) limit.getData() && p.getEnderChest().getItem(a).getAmount() < is.getMaxStackSize()) {
-                            if (limit.isNameOrId()) {
-                                if (x != 0) {
-                                    is = new ItemStack(Material.getMaterial(limit.getMaterial()), is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount(), (short) limit.getData());
-                                    xx += is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount();
-                                    x -= is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount();
-                                }
-                            } else {
-                                if (x != 0) {
-                                    is = new ItemStack(Material.getMaterial(Integer.valueOf(limit.getMaterial())), is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount(), (short) limit.getData());
-                                    xx += is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount();
-                                    x -= is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount();
-                                }
-                                p.getEnderChest().setItem(a, is);
-                            }
-                        } else {
-                            if (limit.isNameOrId()) {
-                                if (x != 0) {
-                                    is = new ItemStack(Material.getMaterial(limit.getMaterial()), is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount(), (short) limit.getData());
-                                    xx += is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount();
-                                    x -= is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount();
-                                }
-                            } else {
-                                if (x != 0) {
-                                    is = new ItemStack(Material.getMaterial(Integer.valueOf(limit.getMaterial())), is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount(), (short) limit.getData());
-                                    xx += is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount();
-                                    x -= is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount();
-                                }
-                                p.getEnderChest().setItem(a, is);
-                            }
+                if (amount > limit.getVlimit()) {
+                    ItemStack is = new ItemStack(mat, amount - limit.getVlimit(), (short) limit.getData());
+
+                    Util.removeInventoryItems(p.getInventory(), mat, limit.getData(), limit.getVlimit());
+                    String[] split = Util.addItem(p, p.getEnderChest(), is).split("-");
+
+                    if (Integer.parseInt(split[0]) != 0) {
+                        for (String s : limit.getMessageMoveItem()) {
+                            p.sendMessage(Util.fixColors(s.replace("{AMOUNT}", split[0])));
                         }
                     }
-                    if(xx != 0){
-                        for(String s : limit.getMessageVipMoveItem()){
-                            p.sendMessage(Util.fixColors(s.replace("{AMOUNT}", String.valueOf(xx))));
+                    if (Integer.parseInt(split[1]) != 0) {
+                        for (String s : limit.getMessageDropItem()) {
+                            p.sendMessage(Util.fixColors(s.replace("{AMOUNT}", split[1])));
                         }
-                        xx = 0;
-                    }
-                    if (x != 0) {
-                        is = new ItemStack(Material.getMaterial(Integer.valueOf(limit.getMaterial())), x, (short) limit.getData());
-                        Bukkit.getWorld(p.getWorld().getName()).dropItemNaturally(p.getLocation(), is);
-                        for(String s : limit.getMessageVipDropItem()){
-                            p.sendMessage(Util.fixColors(s.replace("{AMOUNT}", String.valueOf(x))));
-                        }
-                        x=0;
                     }
                 }
-            } else {
-                if (i > limit.getPlimit()) {
-                    if (limit.isNameOrId()) {
-                        is = new ItemStack(Material.getMaterial(limit.getMaterial()), i - limit.getPlimit(), (short) limit.getData());
-                    } else {
-                        is = new ItemStack(Material.getMaterial(Integer.valueOf(limit.getMaterial())), i - limit.getPlimit(), (short) limit.getData());
-                    }
-                    int x = is.getAmount();
-                    int xx= 0;
-                    p.getInventory().remove(is);
-                    for (int a = 0; a < p.getEnderChest().getSize(); a++) {
-                        if (p.getEnderChest().getItem(a).getType().equals(is.getType()) && p.getEnderChest().getItem(a).getData().getData() == (short) limit.getData() && p.getEnderChest().getItem(a).getAmount() < is.getMaxStackSize()) {
-                            if (limit.isNameOrId()) {
-                                if (x != 0) {
-                                    is = new ItemStack(Material.getMaterial(limit.getMaterial()), is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount(), (short) limit.getData());
-                                    xx += is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount();
-                                    x -= is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount();
-                                }
-                            } else {
-                                if (x != 0) {
-                                    is = new ItemStack(Material.getMaterial(Integer.valueOf(limit.getMaterial())), is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount(), (short) limit.getData());
-                                    xx += is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount();
-                                    x -= is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount();
-                                }
-                                p.getEnderChest().setItem(a, is);
-                            }
-                        } else {
-                            if (limit.isNameOrId()) {
-                                if (x != 0) {
-                                    is = new ItemStack(Material.getMaterial(limit.getMaterial()), is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount(), (short) limit.getData());
-                                    xx += is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount();
-                                    x -= is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount();
-                                }
-                            } else {
-                                if (x != 0) {
-                                    is = new ItemStack(Material.getMaterial(Integer.valueOf(limit.getMaterial())), is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount(), (short) limit.getData());
-                                    xx += is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount();
-                                    x -= is.getMaxStackSize() - p.getEnderChest().getItem(a).getAmount();
-                                }
-                                p.getEnderChest().setItem(a, is);
-                            }
+            }else{
+                if (amount > limit.getPlimit()) {
+                    ItemStack is = new ItemStack(mat, amount - limit.getPlimit(), (short) limit.getData());
+
+                    Util.removeInventoryItems(p.getInventory(), mat, limit.getData(), limit.getPlimit());
+                    String[] split = Util.addItem(p, p.getEnderChest(), is).split("-");
+
+                    if (Integer.parseInt(split[0]) != 0) {
+                        for (String s : limit.getMessageMoveItem()) {
+                            p.sendMessage(Util.fixColors(s.replace("{AMOUNT}", split[0])));
                         }
                     }
-                    if(xx != 0){
-                        for(String s : limit.getMessagePlayerMoveItem()){
-                            p.sendMessage(Util.fixColors(s.replace("{AMOUNT}", String.valueOf(xx))));
+                    if (Integer.parseInt(split[1]) != 0) {
+                        for (String s : limit.getMessageDropItem()) {
+                            p.sendMessage(Util.fixColors(s.replace("{AMOUNT}", split[1])));
                         }
-                        xx = 0;
-                    }
-                    if (x != 0) {
-                        is = new ItemStack(Material.getMaterial(Integer.valueOf(limit.getMaterial())), x, (short) limit.getData());
-                        Bukkit.getWorld(p.getWorld().getName()).dropItemNaturally(p.getLocation(), is);
-                        for(String s : limit.getMessagePlayerDropItem()){
-                            p.sendMessage(Util.fixColors(s.replace("{AMOUNT}", String.valueOf(x))));
-                        }
-                        x=0;
                     }
                 }
             }

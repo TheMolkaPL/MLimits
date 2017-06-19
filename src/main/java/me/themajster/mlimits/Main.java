@@ -9,7 +9,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * Created by TheMajster on 23.05.2017.
+ * Created by TheMajster on 19.06.2017.
  */
 public class Main extends JavaPlugin {
 
@@ -33,8 +33,8 @@ public class Main extends JavaPlugin {
         return plugin;
     }
     private static void registerListeners(){
-        PluginManager pm = Bukkit.getPluginManager();
         if(Config.isCheckEvent()){
+            PluginManager pm = Bukkit.getPluginManager();
             pm.registerEvents(new PlayerInteractListener(), getPlugin());
         }
     }
